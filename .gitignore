@@ -1,0 +1,27 @@
+# Secrets: never commit keys or env files
+devnet-keypair.json
+*keypair*.json
+*.keypair
+id.json
+.env
+.env*
+!.env.example
+
+# pay.sh local config/wallets (normally ~/.config/pay, guarded here too)
+.config/pay/
+pay/accounts.yml
+
+# Dependencies and build output
+node_modules/
+dist/
+*.log
+
+# Vendored agent skills (restore with skills-lock.json)
+.agents/
+.claude/skills/
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
