@@ -4,12 +4,12 @@
 
 <h1 align="center">Agent Tip Jar</h1>
 
-<p align="center"><b>Tell Claude who to tip in plain English. It sends SOL with an onchain memo and hands you the receipt.</b></p>
+<p align="center"><b>An AI agent with a Solana wallet. It pays for APIs over HTTP 402 and tips people, with an onchain receipt for every payment.</b></p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Solana-devnet-9945FF?logo=solana&logoColor=white" alt="Solana devnet">
   <img src="https://img.shields.io/badge/built%20with-Claude%20Code-14F195" alt="Built with Claude Code">
-  <img src="https://img.shields.io/badge/x402-pay.sh-1E1438" alt="x402 pay.sh">
+  <img src="https://img.shields.io/badge/payments-x402-1E1438" alt="x402 payments">
   <img src="https://img.shields.io/badge/license-MIT-white" alt="MIT license">
 </p>
 
@@ -24,11 +24,23 @@
 
 ## Demo
 
-A real devnet tip of 0.01 SOL to `test` with the memo "thanks for the workshop":
+One command: the agent hits a paid API, pays it on Solana, gets the answer, then tips a person.
 
-[View the transaction on Solana Explorer](https://explorer.solana.com/tx/3rjySbBGocuFV9xqUsHbCxyt9WUHFhCmUDxcvGQw2fSfL17axDLgse7fUGWnDW56rpr9ycUQeCGqkxxX9auR3PG2?cluster=devnet)
+```text
+$ npm run agent
+🧾 402 Payment Required: 0.001 SOL to 835ZAX5T3TKPzMAXenQrFx2aTZcPQwv1vnkZABgBLrCQ (memo 7ef209ac6941364b)
+💳 Paid 0.001 SOL
+🔮 Paid answer: A small tip today compounds into a big thank you tomorrow.
+💸 Tipped test 0.01 SOL: "paid via x402 + tipped onchain"
+```
 
-The transfer and the memo land in a single transaction, so the message is permanently attached to the payment.
+Real devnet receipts from that run:
+
+- [API payment](https://explorer.solana.com/tx/5aM8rR5Ecpoca5hfQMS2ZXRR9Z3aAi2S8XMZ97AgRrMnQnMfhFa9X4summNddgoGW368xvBurtkFsbJxaVm4LeWN?cluster=devnet) (0.001 SOL, memo nonce `7ef209ac6941364b`)
+- [Tip](https://explorer.solana.com/tx/FF1pg7zC7azFAYgjiQZrVAnk3pY9zin1VXho6guS5zCA9UKktvSTeasJyzZQsfzxo8jZbVFnp1qHKdsvuAzWqqh?cluster=devnet) (0.01 SOL, "paid via x402 + tipped onchain")
+- [First tip from plain English](https://explorer.solana.com/tx/3rjySbBGocuFV9xqUsHbCxyt9WUHFhCmUDxcvGQw2fSfL17axDLgse7fUGWnDW56rpr9ycUQeCGqkxxX9auR3PG2?cluster=devnet) ("thanks for the workshop")
+
+Every transfer and its memo land in one transaction, so the reason for each payment is permanently attached to it.
 
 ## How it works
 
@@ -48,10 +60,22 @@ The transfer and the memo land in a single transaction, so the message is perman
 3. It retries with `X-Payment: <tx signature>`. The server fetches that transaction on devnet, checks it paid at least the price to `payTo` with the matching nonce, then returns the answer. Nonces are single use, and reused or unknown signatures are rejected.
 4. It tips `test` 0.01 SOL with the memo "paid via x402 + tipped onchain" and prints both receipts.
 
-Receipts from a real run:
+### Payment flow
 
-- API payment (0.001 SOL, memo nonce `7ef209ac6941364b`): [view on Explorer](https://explorer.solana.com/tx/5aM8rR5Ecpoca5hfQMS2ZXRR9Z3aAi2S8XMZ97AgRrMnQnMfhFa9X4summNddgoGW368xvBurtkFsbJxaVm4LeWN?cluster=devnet)
-- Tip (0.01 SOL, "paid via x402 + tipped onchain"): [view on Explorer](https://explorer.solana.com/tx/FF1pg7zC7azFAYgjiQZrVAnk3pY9zin1VXho6guS5zCA9UKktvSTeasJyzZQsfzxo8jZbVFnp1qHKdsvuAzWqqh?cluster=devnet)
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant S as Paid API
+    participant C as Solana devnet
+    A->>S: GET /fortune
+    S-->>A: 402 Payment Required (price, payTo, nonce)
+    A->>C: transfer 0.001 SOL + memo nonce (one tx)
+    C-->>A: signature
+    A->>S: GET /fortune + X-Payment: signature
+    S->>C: fetch tx, check amount, payTo, nonce
+    S-->>A: 200 answer (nonce now used)
+    A->>C: tip 0.01 SOL + thank you memo
+```
 
 ## Quick start
 
@@ -97,6 +121,12 @@ Add your own handles by copying `tips.example.json` to `tips.json` and filling i
 - Memo program (`@solana-program/memo`) for the onchain note, plus `@solana-program/system` for the transfer
 - [Solana Developer MCP](https://mcp.solana.com) for up-to-date docs inside the agent
 - [Claude Code](https://claude.com/claude-code) as the agent
+
+## Limitations
+
+- Devnet only. The agent refuses anything that is not SOL on devnet or costs more than 0.01 SOL.
+- The server keeps issued nonces and used signatures in memory, so a restart clears them. A real deployment would store them in a database.
+- The payment format is x402 style, not a full x402 spec implementation. pay.sh is the planned production path (see below).
 
 ## pay.sh (x402) status
 
