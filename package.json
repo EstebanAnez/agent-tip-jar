@@ -6,6 +6,8 @@
   "scripts": {
     "tip": "node tip.ts",
     "keygen": "node keygen.ts",
+    "server": "node server.ts",
+    "agent": "node agent.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

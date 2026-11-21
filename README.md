@@ -39,6 +39,20 @@ The transfer and the memo land in a single transaction, so the message is perman
 3. **One transaction.** `tip.ts` looks up the handle in `tips.json`, then sends a System program transfer plus a Memo program instruction in one transaction.
 4. **Explorer receipt.** The script prints a Solana Explorer link so you can verify the tip and memo onchain.
 
+### Agent pays for APIs (x402 on devnet)
+
+`npm run agent` shows an agent paying for an API by itself, then tipping:
+
+1. The agent calls `GET /fortune` on our paid API (`server.ts`) and gets **HTTP 402** with a price (0.001 SOL), a `payTo` address and a one-time memo nonce.
+2. It pays automatically with the same transfer + memo logic as `tip.ts`, in one transaction. It refuses anything that isn't SOL on devnet or costs more than 0.01 SOL.
+3. It retries with `X-Payment: <tx signature>`. The server fetches that transaction on devnet, checks it paid at least the price to `payTo` with the matching nonce, then returns the answer. Nonces are single use, and reused or unknown signatures are rejected.
+4. It tips `test` 0.01 SOL with the memo "paid via x402 + tipped onchain" and prints both receipts.
+
+Receipts from a real run:
+
+- API payment (0.001 SOL, memo nonce `7ef209ac6941364b`): [view on Explorer](https://explorer.solana.com/tx/5aM8rR5Ecpoca5hfQMS2ZXRR9Z3aAi2S8XMZ97AgRrMnQnMfhFa9X4summNddgoGW368xvBurtkFsbJxaVm4LeWN?cluster=devnet)
+- Tip (0.01 SOL, "paid via x402 + tipped onchain"): [view on Explorer](https://explorer.solana.com/tx/FF1pg7zC7azFAYgjiQZrVAnk3pY9zin1VXho6guS5zCA9UKktvSTeasJyzZQsfzxo8jZbVFnp1qHKdsvuAzWqqh?cluster=devnet)
+
 ## Quick start
 
 Requires Node.js 22.6 or newer (Node 24 recommended) so `.ts` files run directly.
@@ -63,6 +77,16 @@ Send a tip:
 npm run tip test 0.01 "thanks"
 ```
 
+Run the paid API and let the agent pay for it (two terminals):
+
+```bash
+npm run server
+```
+
+```bash
+npm run agent
+```
+
 Add your own handles by copying `tips.example.json` to `tips.json` and filling in devnet addresses.
 
 > `devnet-keypair.json` holds your private key and is git-ignored. Never commit it.
@@ -76,11 +100,13 @@ Add your own handles by copying `tips.example.json` to `tips.json` and filling i
 
 ## pay.sh (x402) status
 
-Work in progress. Using `pay --sandbox`, the agent received the HTTP 402 challenge from `debugger.pay.sh` and funded a sandbox wallet. The final payment is blocked by a 504 timeout from pay.sh's hosted balance service, so pay reads the wallet as empty and declines to pay. No mainnet funds were used.
+Using `pay --sandbox`, the agent received the HTTP 402 challenge from `debugger.pay.sh` and funded a sandbox wallet. The final payment is still blocked: pay.sh's hosted balance service times out (HTTP 504), so pay reads the wallet as empty and declines to pay. A retry on 2026-11-21 failed the same way. No mainnet funds were used.
+
+While that is blocked, the paid API flow runs on our own x402-style server on devnet (see "Agent pays for APIs" above). Switching the agent to pay.sh later only changes how it pays, not the flow.
 
 ## Roadmap
 
-- **Finish pay.sh paid calls:** let the agent pay for an API call over HTTP 402, then tip onchain in the same flow.
+- **Finish pay.sh paid calls:** swap our devnet x402-style payment for pay.sh once its balance service is reachable.
 - **Pay per answer API:** an API other agents can buy answers from through x402.
 
 ## Built at
