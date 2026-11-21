@@ -1,4 +1,8 @@
-# Agent Tip Jar
+<p align="center">
+  <img src="assets/logo.png" alt="Agent Tip Jar logo" width="180">
+</p>
+
+<h1 align="center">Agent Tip Jar</h1>
 
 **Tell Claude who to tip in plain English. It sends SOL with an onchain memo and hands you the receipt.**
 

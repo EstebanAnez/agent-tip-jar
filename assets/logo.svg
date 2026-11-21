@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="sol" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#9945FF"/>
+      <stop offset="1" stop-color="#14F195"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.08"/>
+    </linearGradient>
+    <clipPath id="jarClip">
+      <path d="M156 196 Q132 214 132 250 L132 392 Q132 432 172 432 L340 432 Q380 432 380 392 L380 250 Q380 214 356 196 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" rx="112" fill="#0B0B12"/>
+  <circle cx="420" cy="92" r="70" fill="#9945FF" opacity="0.35"/>
+  <circle cx="86" cy="440" r="56" fill="#14F195" opacity="0.25"/>
+
+  <!-- antenna -->
+  <line x1="256" y1="150" x2="256" y2="104" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="256" cy="94" r="18" fill="#14F195"/>
+
+  <!-- lid -->
+  <rect x="160" y="150" width="192" height="50" rx="18" fill="url(#sol)"/>
+  <rect x="226" y="166" width="60" height="12" rx="6" fill="#0B0B12" opacity="0.55"/>
+
+  <!-- coins inside the jar -->
+  <g clip-path="url(#jarClip)">
+    <rect x="120" y="330" width="280" height="120" fill="#1E1438"/>
+    <g>
+      <ellipse cx="190" cy="372" rx="34" ry="34" fill="#14F195"/>
+      <ellipse cx="258" cy="360" rx="34" ry="34" fill="#9945FF"/>
+      <ellipse cx="324" cy="376" rx="34" ry="34" fill="#14F195"/>
+      <ellipse cx="226" cy="414" rx="34" ry="34" fill="#9945FF"/>
+      <ellipse cx="296" cy="418" rx="34" ry="34" fill="#14F195"/>
+    </g>
+    <!-- solana-style stripes on the front coin -->
+    <g fill="#0B0B12" opacity="0.6">
+      <path d="M240 348 h40 l-6 7 h-40 z"/>
+      <path d="M234 362 h40 l6 7 h-40 z"/>
+      <path d="M240 376 h40 l-6 7 h-40 z"/>
+    </g>
+  </g>
+
+  <!-- jar glass -->
+  <path d="M156 196 Q132 214 132 250 L132 392 Q132 432 172 432 L340 432 Q380 432 380 392 L380 250 Q380 214 356 196 Z"
+        fill="url(#glass)" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round"/>
+  <!-- shine -->
+  <path d="M160 250 Q160 228 176 218" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+  <!-- cute face -->
+  <ellipse cx="216" cy="266" rx="14" ry="17" fill="#FFFFFF"/>
+  <ellipse cx="296" cy="266" rx="14" ry="17" fill="#FFFFFF"/>
+  <circle cx="220" cy="262" r="5" fill="#0B0B12"/>
+  <circle cx="300" cy="262" r="5" fill="#0B0B12"/>
+  <ellipse cx="190" cy="298" rx="16" ry="9" fill="#FF7AB6" opacity="0.75"/>
+  <ellipse cx="322" cy="298" rx="16" ry="9" fill="#FF7AB6" opacity="0.75"/>
+  <path d="M236 296 Q256 316 276 296" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none"/>
+
+  <!-- falling coin -->
+  <g transform="translate(352 118) rotate(-18)">
+    <ellipse cx="0" cy="0" rx="26" ry="26" fill="#14F195" stroke="#0B0B12" stroke-width="5"/>
+    <path d="M-12 -10 h22 l-4 5 h-22 z M-14 -2 h22 l4 5 h-22 z M-12 7 h22 l-4 5 h-22 z" fill="#0B0B12"/>
+  </g>
+</svg>
