@@ -4,6 +4,11 @@
 
 Runs on Solana devnet. No real funds involved.
 
+## Slides
+
+- [PDF in this repo](docs/agent-tip-jar-slides.pdf)
+- [Google Slides](https://docs.google.com/presentation/d/1P4QarRl_2VatntOJx0iyyX253DQCeFXUPVcd2G0peBY/edit)
+
 ## Demo
 
 A real devnet tip of 0.01 SOL to `test` with the memo "thanks for the workshop":
@@ -14,10 +19,10 @@ The transfer and the memo land in a single transaction, so the message is perman
 
 ## How it works
 
-1. **Ask.** Tell Claude Code something like "tip test 0.01 SOL and say thanks for the workshop".
-2. **Claude Code + Solana MCP.** Claude uses the Solana Developer MCP for current docs and turns your request into a `npm run tip` command.
+1. **Ask in plain English.** Tell Claude Code something like "tip test 0.01 SOL and say thanks".
+2. **Claude Code + Solana MCP runs it.** Claude uses the Solana Developer MCP for current docs and picks the right `npm run tip` command.
 3. **One transaction.** `tip.ts` looks up the handle in `tips.json`, then sends a System program transfer plus a Memo program instruction in one transaction.
-4. **Receipt.** The script prints a Solana Explorer link so you can verify the tip and memo onchain.
+4. **Explorer receipt.** The script prints a Solana Explorer link so you can verify the tip and memo onchain.
 
 ## Quick start
 
@@ -29,7 +34,7 @@ cd agent-tip-jar
 npm install
 ```
 
-Create and fund your sender wallet:
+Create your sender wallet:
 
 ```bash
 npm run keygen
@@ -50,22 +55,22 @@ Add your own handles by copying `tips.example.json` to `tips.json` and filling i
 ## Tech stack
 
 - [@solana/kit](https://github.com/anza-xyz/kit) 8 with plugin clients (`@solana/kit-plugin-rpc`, `@solana/kit-plugin-signer`)
-- `@solana-program/system` for the SOL transfer
-- `@solana-program/memo` for the onchain message (Memo program)
+- Memo program (`@solana-program/memo`) for the onchain note, plus `@solana-program/system` for the transfer
 - [Solana Developer MCP](https://mcp.solana.com) for up-to-date docs inside the agent
 - [Claude Code](https://claude.com/claude-code) as the agent
-- [pay.sh](https://pay.sh) x402 / MPP payments (in progress)
+
+## pay.sh (x402) status
+
+Work in progress. Using `pay --sandbox`, the agent received the HTTP 402 challenge from `debugger.pay.sh` and funded a sandbox wallet. The final payment is blocked by a 504 timeout from pay.sh's hosted balance service, so pay reads the wallet as empty and declines to pay. No mainnet funds were used.
 
 ## Roadmap
 
-- **pay.sh paid API calls:** let the agent pay for an API call over HTTP 402, then tip onchain in the same flow.
-- **Pay per answer API:** charge a small amount per answer through x402 and route tips to contributors.
+- **Finish pay.sh paid calls:** let the agent pay for an API call over HTTP 402, then tip onchain in the same flow.
+- **Pay per answer API:** an API other agents can buy answers from through x402.
 
 ## Built at
 
-- UBC 2026
-- UT Austin
-- Solana workshop by [brimigs](https://github.com/brimigs/workshop)
+UBC 2026 (UT Austin), Solana workshop by [brimigs](https://github.com/brimigs/workshop).
 
 ## License
 
