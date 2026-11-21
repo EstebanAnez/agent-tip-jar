@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/license-MIT-white" alt="MIT license">
 </p>
 
-<p align="center">Runs on Solana devnet. No real funds involved.</p>
+<p align="center"><a href="https://estebananez.github.io/agent-tip-jar/"><b>▶ Live demo page</b></a> · Runs on Solana devnet. No real funds involved.</p>
 
 ![Agent Tip Jar title slide](assets/slide-title.png)
 
