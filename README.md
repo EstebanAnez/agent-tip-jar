@@ -4,9 +4,18 @@
 
 <h1 align="center">Agent Tip Jar</h1>
 
-**Tell Claude who to tip in plain English. It sends SOL with an onchain memo and hands you the receipt.**
+<p align="center"><b>Tell Claude who to tip in plain English. It sends SOL with an onchain memo and hands you the receipt.</b></p>
 
-Runs on Solana devnet. No real funds involved.
+<p align="center">
+  <img src="https://img.shields.io/badge/Solana-devnet-9945FF?logo=solana&logoColor=white" alt="Solana devnet">
+  <img src="https://img.shields.io/badge/built%20with-Claude%20Code-14F195" alt="Built with Claude Code">
+  <img src="https://img.shields.io/badge/x402-pay.sh-1E1438" alt="x402 pay.sh">
+  <img src="https://img.shields.io/badge/license-MIT-white" alt="MIT license">
+</p>
+
+<p align="center">Runs on Solana devnet. No real funds involved.</p>
+
+![Agent Tip Jar title slide](assets/slide-title.png)
 
 ## Slides
 
@@ -22,6 +31,8 @@ A real devnet tip of 0.01 SOL to `test` with the memo "thanks for the workshop":
 The transfer and the memo land in a single transaction, so the message is permanently attached to the payment.
 
 ## How it works
+
+![How it works and devnet proof](assets/slide-flow.png)
 
 1. **Ask in plain English.** Tell Claude Code something like "tip test 0.01 SOL and say thanks".
 2. **Claude Code + Solana MCP runs it.** Claude uses the Solana Developer MCP for current docs and picks the right `npm run tip` command.
