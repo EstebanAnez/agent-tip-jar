@@ -7,6 +7,10 @@
 <p align="center"><b>An AI agent with a Solana wallet. It pays for APIs over HTTP 402 and tips people, with an onchain receipt for every payment.</b></p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/%F0%9F%8F%86%20Winner-Solana%20Challenge%20at%20UBC%202026-14F195" alt="Winner, Solana Challenge at UBC 2026">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Solana-devnet-9945FF?logo=solana&logoColor=white" alt="Solana devnet">
   <img src="https://img.shields.io/badge/built%20with-Claude%20Code-14F195" alt="Built with Claude Code">
   <img src="https://img.shields.io/badge/payments-x402-1E1438" alt="x402 payments">
@@ -141,7 +145,7 @@ While that is blocked, the paid API flow runs on our own x402-style server on de
 
 ## Built at
 
-UBC 2026 (UT Austin), Solana workshop by [brimigs](https://github.com/brimigs/workshop).
+🏆 **Winner, Solana Challenge at UBC 2026** (UT Austin). Built during the Solana workshop by [brimigs](https://github.com/brimigs/workshop).
 
 ## License
 
